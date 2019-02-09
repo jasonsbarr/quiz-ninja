@@ -1,38 +1,42 @@
 const quiz = [
-    [`What is Superman's real name?`, `Clark Kent`],
-    [`What is Wonder Woman's real name?`, `Diana Prince`],
-    [`What is Batman's real name?`, `Bruce Wayne`],
+    { name: `Superman`, realName: `Clark Kent`},
+    { name: `Wonder Woman`, realName: `Diana Prince`},
+    { name: `Batman`, realName: `Bruce Wayne`},
 ];
 
-function play(quiz) {
-    let score = 0;
+const game = {
+    start(quiz) {
+        this.questions = [...quiz];
+        this.score = 0;
 
-    // Main game loop
-    for (const [question, answer] of quiz) {
-        const response = ask(question);
-        check(response, answer);
-    }
+        // Main game loop
+        for (const question of this.questions) {
+            this.question = question;
+            this.ask();
+        }
 
-    // End of main game loop
-    gameOver();
+        this.gameOver();
+    },
 
-    // Game functions
-    function ask(question) {
-        return prompt(question);
-    }
+    ask() {
+        const question = `What is ${this.question.name}'s real name?`;
+        const response = prompt(question);
+        this.check(response);
+    },
 
-    function check(response, answer) {
+    check(response) {
+        const answer = this.question.realName;
         if (response === answer) {
             alert(`Correct!`);
-            score++;
+            this.score++;
         } else {
             alert(`Wrong! The correct answer was ${answer}.`);
         }
-    }
+    },
 
-    function gameOver() {
-        alert(`Game over. You scored ${score} point${score !== 1 ? 's' : ''}`);
-    }
+    gameOver() {
+        alert(`Game Over. You scored ${this.score} point${this.score !== 1 ? 's' : ''}.`);
+    },
 }
 
-play(quiz);
+game.start(quiz);
