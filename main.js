@@ -10,6 +10,15 @@ const view = {
     question: document.getElementById('question'),
     result: document.getElementById('result'),
     info: document.getElementById('info'),
+    start: document.getElementById('start'),
+
+    show(element) {
+        element.style.display = 'block';
+    },
+
+    hide(element) {
+        element.style.display = 'none';
+    },
 
     render(target, content, attributes) {
         for (const key in attributes) {
@@ -24,6 +33,7 @@ const game = {
     start(quiz) {
         this.questions = [...quiz];
         this.score = 0;
+        view.hide(view.start);
 
         // Main game loop
         for (const question of this.questions) {
@@ -55,8 +65,10 @@ const game = {
     },
 
     gameOver() {
-        view.render(view.result, `Game Over. You scored ${this.score} point${this.score !== 1 ? 's' : ''}.`);
+        view.render(view.info, `Game Over. You scored ${this.score} point${this.score !== 1 ? 's' : ''}.`);
+
+        view.show(view.start);
     },
 }
 
-game.start(quiz);
+view.start.addEventListener('click', () => game.start(quiz), false)
